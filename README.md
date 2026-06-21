@@ -6,6 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Dars Pro">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.json">
 <title>Dars Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -18,8 +20,20 @@
 }
 body{background:var(--bg);color:var(--text);font-family:'Nunito',-apple-system,sans-serif;min-height:100vh;max-width:430px;margin:0 auto;padding-bottom:60px;}
 
+/* SIDE MENU */
+.side-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.side-overlay.open{opacity:1;pointer-events:all;}
+.side-menu{position:fixed;top:0;left:0;bottom:0;width:78%;max-width:300px;background:var(--surface);z-index:301;padding:56px 14px 24px;transform:translateX(-100%);transition:transform 0.28s cubic-bezier(.4,0,.2,1);box-shadow:6px 0 30px rgba(0,0,0,0.5);overflow-y:auto;}
+.side-menu.open{transform:translateX(0);}
+.side-logo{padding:0 10px 22px;}
+.side-item{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;border:none;background:transparent;color:var(--text);font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;border-radius:12px;cursor:pointer;text-align:left;margin-bottom:3px;transition:background 0.15s;}
+.side-item:active{background:var(--surface2);}
+.side-item.active{background:rgba(255,159,10,0.13);color:var(--orange);}
+.side-div{height:1px;background:var(--border);margin:12px 4px;}
+.side-add{color:var(--orange);}
+
 /* HEADER */
-.header{padding:52px 20px 6px;display:flex;justify-content:space-between;align-items:flex-end;}
+.header{padding:52px 20px 6px;display:flex;justify-content:space-between;align-items:center;}
 .logo{display:flex;align-items:baseline;gap:2px;}
 .logo-dars{font-size:2rem;font-weight:800;color:var(--orange);letter-spacing:-0.5px;}
 .logo-pro{font-size:2rem;font-weight:800;color:var(--text);letter-spacing:-0.5px;}
@@ -27,11 +41,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',-apple-system,s
 .clock{font-size:0.85rem;color:var(--muted);}
 .icon-btn{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:none;color:var(--orange);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.15s;}
 .icon-btn:active{transform:scale(0.88);}
-
-/* TABS */
-.nav-tabs{display:flex;border-bottom:1px solid var(--border);}
-.nav-tab{flex:1;padding:10px 4px;font-size:0.75rem;font-weight:700;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;border-bottom:2px solid transparent;transition:all 0.18s;letter-spacing:0.3px;}
-.nav-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
 
 /* DAY TABS */
 .day-scroll{display:flex;gap:7px;padding:10px 16px;overflow-x:auto;scrollbar-width:none;}
@@ -108,6 +117,20 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',-apple-system,s
 .prog-bar{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:6px;}
 .prog-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
 
+/* STUDENTS LIST */
+.students-wrap{padding:14px 16px;}
+.students-add-btn{width:100%;padding:13px;background:rgba(255,159,10,0.12);border:1.5px dashed var(--orange);color:var(--orange);border-radius:14px;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.stu-list-card{background:var(--surface);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform 0.12s;}
+.stu-list-card:active{transform:scale(0.98);}
+.stu-list-avatar{width:44px;height:44px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:var(--orange);flex-shrink:0;}
+.stu-list-info{flex:1;min-width:0;}
+.stu-list-name{font-size:0.98rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stu-list-sched{font-size:0.72rem;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stu-list-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
+.stu-list-pct{font-size:0.85rem;font-weight:800;}
+.stu-list-pct-lbl{font-size:0.58rem;color:var(--muted);font-weight:700;text-transform:uppercase;}
+.stu-list-chev{color:var(--muted);font-size:1.1rem;margin-left:2px;}
+
 /* SETTINGS */
 .settings-wrap{padding:16px;}
 .set-section{font-size:0.7rem;font-weight:700;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin:16px 0 8px;}
@@ -166,6 +189,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .modal-bg.open .modal-box{transform:translateY(0);}
 .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
 .modal-title{font-size:1.05rem;font-weight:700;margin-bottom:16px;}
+.stu-stats-card{background:var(--surface2);border-radius:14px;padding:14px;margin-bottom:16px;}
+.stu-stats-row{display:flex;gap:8px;margin-bottom:10px;}
+.stu-stats-c{flex:1;text-align:center;}
+.stu-stats-v{font-size:1.2rem;font-weight:800;line-height:1;}
+.stu-stats-l{font-size:0.58rem;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:0.3px;}
+.stu-stats-divider{height:1px;background:var(--border);margin:10px 0;}
+.stu-stats-next{font-size:0.78rem;color:var(--muted);}
+.stu-stats-next b{color:var(--text);}
 .m-label{display:block;font-size:0.68rem;color:var(--muted);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:5px;margin-top:12px;}
 .m-input{width:100%;background:var(--surface2);border:none;border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:0.95rem;padding:11px 14px;outline:none;-webkit-appearance:none;}
 .m-select{width:100%;background:var(--surface2);border:none;border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:0.95rem;padding:11px 14px;outline:none;-webkit-appearance:none;}
@@ -200,19 +231,24 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </head>
 <body>
 
+<!-- SIDE MENU -->
+<div class="side-overlay" id="sideOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-logo"><span class="logo-dars">Dars</span><span class="logo-pro"> Pro</span></div>
+  <button class="side-item active" id="side-jadval" onclick="switchTab('jadval')">📅 <span>Jadval</span></button>
+  <button class="side-item" id="side-students" onclick="switchTab('students')">👥 <span>O'quvchilar</span></button>
+  <button class="side-item" id="side-stat" onclick="switchTab('stat')">📊 <span>Statistika</span></button>
+  <button class="side-item" id="side-settings" onclick="switchTab('settings')">⚙️ <span>Sozlamalar</span></button>
+  <div class="side-div"></div>
+  <button class="side-item side-add" onclick="openModal();closeSideMenu();">➕ <span>Yangi shogird</span></button>
+</div>
+
 <div class="header">
+  <button class="icon-btn" onclick="openSideMenu()" title="Menyu" style="font-size:1.1rem;">☰</button>
   <div class="logo"><span class="logo-dars">Dars</span><span class="logo-pro"> Pro</span></div>
   <div class="header-right">
     <div class="clock" id="clk"></div>
-    <button class="icon-btn" onclick="switchTab('settings')" title="Sozlamalar">⚙️</button>
-    <button class="icon-btn" onclick="openModal()" title="Qo'shish" style="background:var(--orange);color:#000;font-size:1.3rem;">+</button>
   </div>
-</div>
-
-<div class="nav-tabs">
-  <button class="nav-tab active" id="tab-jadval" onclick="switchTab('jadval')">JADVAL</button>
-  <button class="nav-tab" id="tab-stat" onclick="switchTab('stat')">STATISTIKA</button>
-  <button class="nav-tab" id="tab-settings" onclick="switchTab('settings')">⚙️</button>
 </div>
 
 <!-- JADVAL -->
@@ -220,6 +256,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   <div class="day-scroll" id="dayScroll"></div>
   <div class="week-info" id="weekInfo"></div>
   <div id="lessonContent"></div>
+</div>
+
+<!-- O'QUVCHILAR -->
+<div id="page-students" style="display:none">
+  <div class="students-wrap" id="studentsContent"></div>
 </div>
 
 <!-- STATISTIKA -->
@@ -289,6 +330,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalTitleEl">Yangi shogird</div>
 
+    <div id="studentStatsBlock" style="display:none"></div>
+
     <label class="m-label">Shogird ismi</label>
     <input class="m-input" type="text" id="mName" placeholder="Ismi">
 
@@ -302,7 +345,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
         <button class="ios-toggle" id="altToggle" onclick="toggleAlt()"><div class="ios-toggle-knob"></div></button>
       </div>
       <div id="altContent" style="display:none">
-        <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;">Toq haftalarda boshqa vaqt</div>
+        <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;">Toq haftada qaysi kun boshqa kun/vaqtga almashadi</div>
+        <label class="m-label" style="margin-top:0;">Almashadigan kun (oddiy jadvaldagi)</label>
+        <select class="m-select" id="altBaseDay">
+          <option value="0">Dushanba</option><option value="1">Seshanba</option>
+          <option value="2">Chorshanba</option><option value="3">Payshanba</option>
+          <option value="4">Juma</option><option value="5">Shanba</option><option value="6">Yakshanba</option>
+        </select>
+        <label class="m-label">Toq haftada o'rniga</label>
         <div class="two-col">
           <select class="m-select" id="altDay">
             <option value="0">Dushanba</option><option value="1">Seshanba</option>
@@ -311,7 +361,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
           </select>
           <input class="m-input" type="time" id="altTime" value="20:00">
         </div>
-        <div style="font-size:0.7rem;color:var(--muted);margin-top:6px;">💡 Juft haftalarda oddiy vaqt ishlatiladi</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:6px;">💡 Juft haftalarda oddiy jadval ishlatiladi</div>
       </div>
     </div>
 
@@ -396,9 +446,12 @@ function getEffSched(s){
   const sch=s.schedule||[];
   const alt=s.altSchedule;
   if(!alt||!alt.enabled)return sch;
+  // altBaseDay - qaysi asosiy kun toq haftada almashtirilishi (agar belgilanmagan bo'lsa, birinchi kun olinadi)
+  const baseDay=alt.baseDay!==undefined?+alt.baseDay:(sch[0]?sch[0].day:0);
   if(isOddWeek()){
-    const r=[...sch];
-    if(r.length>0)r[0]={day:+alt.day,time:alt.time};
+    // baseDay kunini ro'yxatdan olib tashlab, o'rniga alt.day/alt.time qo'shamiz
+    const r=sch.filter(sc=>sc.day!==baseDay);
+    r.push({day:+alt.day,time:alt.time});
     return r;
   }
   return sch;
@@ -497,15 +550,27 @@ function applyTheme(key){
   document.documentElement.style.setProperty('--orange',t.orange);
 }
 
+// ==================== SIDE MENU ====================
+function openSideMenu(){
+  document.getElementById('sideMenu').classList.add('open');
+  document.getElementById('sideOverlay').classList.add('open');
+}
+function closeSideMenu(){
+  document.getElementById('sideMenu').classList.remove('open');
+  document.getElementById('sideOverlay').classList.remove('open');
+}
+
 // ==================== TABS ====================
 function switchTab(t){
   curTab=t;
-  ['jadval','stat','settings'].forEach(x=>{
-    document.getElementById('tab-'+x)?.classList.toggle('active',x===t);
+  ['jadval','students','stat','settings'].forEach(x=>{
+    document.getElementById('side-'+x)?.classList.toggle('active',x===t);
     document.getElementById('page-'+x).style.display=x===t?'':'none';
   });
+  if(t==='students')renderStudentsList();
   if(t==='stat')renderStats();
   if(t==='settings')renderSettings();
+  closeSideMenu();
 }
 
 // ==================== RENDER ====================
@@ -781,7 +846,112 @@ function renderSettings(){
   document.getElementById('studentCount').textContent=students.length+' ta';
 }
 
+// ==================== STUDENTS LIST ====================
+function renderStudentsList(){
+  const el=document.getElementById('studentsContent');
+  el.innerHTML=`<button class="students-add-btn" onclick="openModal()">➕ Yangi shogird qo'shish</button>`;
+
+  if(!students.length){
+    el.innerHTML+=`<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">Hali shogird yo'q</div></div>`;
+    return;
+  }
+
+  const now=new Date();
+  const y=now.getFullYear(),m=now.getMonth();
+  const upTo=now.getDate();
+
+  const sorted=[...students].sort((a,b)=>a.name.localeCompare(b.name,'uz'));
+
+  sorted.forEach(s=>{
+    const mh=(s.history||[]).filter(h=>{const[hy,hm]=h.date.split('-').map(Number);return hy===y&&hm===m+1;});
+    const done=mh.filter(h=>h.status==='done').length;
+    let planned=0;
+    for(let d=1;d<=upTo;d++){
+      const date=new Date(y,m,d);
+      const di=date.getDay()===0?6:date.getDay()-1;
+      (s.schedule||[]).forEach(sc=>{if(sc.day===di)planned++;});
+    }
+    const pct=planned>0?Math.round(done/planned*100):0;
+    const pctColor=pct>=80?'var(--green)':pct>=50?'var(--orange)':planned>0?'var(--red)':'var(--muted)';
+
+    const initials=s.name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    const schedTxt=(s.schedule||[]).slice().sort((a,b)=>a.day-b.day)
+      .map(sc=>`${DS[sc.day]} ${sc.time}`).join(' • ')||'Jadval yo\'q';
+    const altBadge=s.altSchedule?.enabled?` <span class="week-badge">galma-gal</span>`:'';
+
+    const card=document.createElement('div');
+    card.className='stu-list-card';
+    card.onclick=()=>openModal(s.id);
+    card.innerHTML=`
+      <div class="stu-list-avatar">${initials}</div>
+      <div class="stu-list-info">
+        <div class="stu-list-name">${s.name}</div>
+        <div class="stu-list-sched">${schedTxt}${altBadge}</div>
+      </div>
+      <div class="stu-list-right">
+        <div class="stu-list-pct" style="color:${pctColor}">${planned>0?pct+'%':'—'}</div>
+        <div class="stu-list-pct-lbl">davomat</div>
+      </div>
+      <div class="stu-list-chev">›</div>`;
+    el.appendChild(card);
+  });
+}
+
 // ==================== MODAL ====================
+function renderStudentStatsBlock(s){
+  const block=document.getElementById('studentStatsBlock');
+  block.style.display='';
+
+  const now=new Date();
+  const y=now.getFullYear(),m=now.getMonth();
+  const mh=(s.history||[]).filter(h=>{const[hy,hm]=h.date.split('-').map(Number);return hy===y&&hm===m+1;});
+  const done=mh.filter(h=>h.status==='done').length;
+  const skipped=mh.filter(h=>h.status==='skipped').length;
+  const upTo=now.getDate();
+  let planned=0;
+  for(let d=1;d<=upTo;d++){
+    const date=new Date(y,m,d);
+    const di=date.getDay()===0?6:date.getDay()-1;
+    (s.schedule||[]).forEach(sc=>{if(sc.day===di)planned++;});
+  }
+  const pct=planned>0?Math.round(done/planned*100):0;
+  const earned=done*(s.pricePerLesson||0)+(s.monthlyPrice&&(s.paymentType==='monthly'||s.paymentType==='both')?s.monthlyPrice:0);
+
+  // Keyingi dars
+  let nextTxt='Jadval belgilanmagan';
+  const eff=getEffSched(s);
+  const today=todayIdx();const nowM=nowMin();
+  let bestDiffDays=8,bestTime='';
+  for(let off=0;off<8;off++){
+    const di=(today+off)%7;
+    if(off===0){
+      const todays=eff.filter(sc=>sc.day===di&&toMin(sc.time)>=nowM);
+      if(todays.length){bestDiffDays=0;bestTime=todays.sort((a,b)=>a.time.localeCompare(b.time))[0].time;break;}
+    }else{
+      const dayLessons=(s.schedule||[]).filter(sc=>sc.day===di);
+      if(dayLessons.length){bestDiffDays=off;bestTime=dayLessons.sort((a,b)=>a.time.localeCompare(b.time))[0].time;break;}
+    }
+  }
+  if(bestDiffDays<8){
+    if(bestDiffDays===0)nextTxt=`Bugun, ${bestTime}`;
+    else if(bestDiffDays===1)nextTxt=`Ertaga, ${bestTime}`;
+    else nextTxt=`${DAYS[(today+bestDiffDays)%7]}, ${bestTime}`;
+  }
+
+  block.innerHTML=`
+    <div class="stu-stats-card">
+      <div class="stu-stats-row">
+        <div class="stu-stats-c"><div class="stu-stats-v" style="color:var(--green)">${done}</div><div class="stu-stats-l">O'tildi</div></div>
+        <div class="stu-stats-c"><div class="stu-stats-v" style="color:var(--red)">${skipped}</div><div class="stu-stats-l">Qoldi</div></div>
+        <div class="stu-stats-c"><div class="stu-stats-v" style="color:var(--orange)">${pct}%</div><div class="stu-stats-l">Davomat</div></div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${pct>=80?'var(--green)':pct>=50?'var(--orange)':'var(--red)'}"></div></div>
+      <div class="stu-stats-divider"></div>
+      <div class="stu-stats-next">📅 Keyingi dars: <b>${nextTxt}</b></div>
+      ${earned>0?`<div class="stu-stats-next" style="margin-top:4px;">💰 Shu oy: <b>${earned.toLocaleString()} so'm</b></div>`:''}
+    </div>`;
+}
+
 function openModal(id){
   editId=id||null;
   altEnabled=false;
@@ -796,6 +966,7 @@ function openModal(id){
   document.getElementById('mMonthlyPrice').value='';
   document.getElementById('altContent').style.display='none';
   document.getElementById('altToggle').classList.remove('on');
+  document.getElementById('altBaseDay').value='0';
 
   if(id){
     const s=students.find(x=>x.id===id);if(!s)return;
@@ -812,10 +983,13 @@ function openModal(id){
       document.getElementById('altToggle').classList.add('on');
       document.getElementById('altDay').value=s.altSchedule.day;
       document.getElementById('altTime').value=s.altSchedule.time;
+      document.getElementById('altBaseDay').value=s.altSchedule.baseDay!==undefined?s.altSchedule.baseDay:(schRows[0]?schRows[0].day:0);
     }
+    renderStudentStatsBlock(s);
   }else{
     document.getElementById('mName').value='';
     schRows=[{day:0,time:'09:00'}];
+    document.getElementById('studentStatsBlock').style.display='none';
   }
 
   renderSchRows();
@@ -883,7 +1057,7 @@ function saveStudent(){
   if(!name)return;
   if(!schRows.length){alert("Kamida 1 ta dars kuni!");return;}
   const schedule=schRows.map(r=>({day:+r.day,time:r.time}));
-  const alt=altEnabled?{enabled:true,day:+document.getElementById('altDay').value,time:document.getElementById('altTime').value}:{enabled:false,day:0,time:'20:00'};
+  const alt=altEnabled?{enabled:true,baseDay:+document.getElementById('altBaseDay').value,day:+document.getElementById('altDay').value,time:document.getElementById('altTime').value}:{enabled:false,baseDay:0,day:0,time:'20:00'};
   const price=+document.getElementById('mPrice').value||0;
   const monthly=+document.getElementById('mMonthlyPrice').value||0;
   const note=document.getElementById('mNote').value.trim();
@@ -967,8 +1141,16 @@ function updateClock(){
 function render(){
   renderDayTabs();
   renderLessons();
+  if(curTab==='students')renderStudentsList();
   if(curTab==='stat')renderStats();
   if(curTab==='settings')renderSettings();
+}
+
+// ==================== SERVICE WORKER (OFFLINE) ====================
+if('serviceWorker'in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
 }
 
 // ==================== INIT ====================
